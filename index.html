@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+
+    <script>
+   var config = {
+    type: Phaser.AUTO,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var tam = 4000;
+
+
+var game = new Phaser.Game(config);
+
+function preload ()
+{
+    
+   
+    this.load.image('comida', 'assets/comida.png');
+    this.load.spritesheet('player', 
+        'assets/player.png',
+        { frameWidth: 32, frameHeight: 48 }
+    );
+  
+}
+var platforms;
+function create ()
+{
+    
+    food = this.physics.add.staticGroup();     
+    this.cameras.main.setBackgroundColor('#f8dad3')
+
+
+
+    //  Set the camera and physics bounds 
+    this.cameras.main.setBounds(0, 0, tam, tam);
+    this.physics.world.setBounds(0, 0, tam, tam);
+    food.create(Math.floor(Math.random() * tam), Math.floor(Math.random() * tam), 'comida');
+
+    for (i=0;i<100;i++){
+        food.create(Math.floor(Math.random() * tam), Math.floor(Math.random() * tam), 'comida');
+
+
+    }
+
+
+player = this.physics.add.sprite(tam/2, tam/2, 'player');
+player.setBounce(0.0);
+player.setCollideWorldBounds(true);
+
+this.physics.add.collider(player, food);
+cursors = this.input.keyboard.createCursorKeys();
+
+this.cameras.main.startFollow(player);
+}
+
+function update ()
+{
+    if (cursors.left.isDown)
+{
+    player.setVelocityX(-160);
+
+ 
+}
+else if (cursors.right.isDown)
+{
+    player.setVelocityX(160);
+
+
+}
+else
+{
+    player.setVelocityX(0);
+
+
+}
+
+if (cursors.up.isDown )
+{
+    player.setVelocityY(-160);
+}
+else if (cursors.down.isDown)
+{
+    player.setVelocityY(160);
+
+    
+}
+else
+{
+    player.setVelocityY(0);
+
+ 
+}
+}
+
+
+
+
+
+    </script>
+
+</body>
+</html>
